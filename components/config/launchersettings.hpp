@@ -23,13 +23,21 @@ namespace Config
         /// Create a Content List (or replace if it already exists)
         void setContentList(const QString& contentListName, const QStringList& fileNames);
 
-        void removeContentList(const QString &contentListName);
+        void setFilePathList(const GameSettings& gameSettings);
 
-        void setCurrentContentListName(const QString &contentListName);
+        void setFilePathList(const QString& contentListName, const QStringList& dataPaths);
+
+        void removeContentList(const QString& contentListName);
+
+        void removeFilePathList(const QString& contentListName);
+
+        void setCurrentContentListName(const QString& contentListName);
 
         QString getCurrentContentListName() const;
 
         QStringList getContentListFiles(const QString& contentListName) const;
+
+        QStringList getDataFolders(const QString& contentListName) const;
 
         /// \return new list that is reversed order of input
         static QStringList reverse(const QStringList& toReverse);
@@ -40,6 +48,8 @@ namespace Config
 
         /// \return key to use to get/set the files in the specified Content List
         static QString makeContentListKey(const QString& contentListName);
+
+        static QString makeDataFolderListKey(const QString& contentListName);
 
         /// \return true if both lists are same
         static bool isEqual(const QStringList& list1, const QStringList& list2);
@@ -55,6 +65,8 @@ namespace Config
         static const char sContentListsSectionPrefix[];
 
         static const char sContentListSuffix[];
+
+        static const char sDataFolderSuffix[];
     };
 }
 #endif // LAUNCHERSETTINGS_HPP

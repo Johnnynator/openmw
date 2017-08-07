@@ -1,5 +1,6 @@
 set(LAUNCHER
     datafilespage.cpp
+    datafolderspage.cpp
     graphicspage.cpp
     main.cpp
     maindialog.cpp
@@ -16,6 +17,7 @@ set(LAUNCHER
 
 set(LAUNCHER_HEADER
     datafilespage.hpp
+    datafolderspage.hpp
     graphicspage.hpp
     maindialog.hpp
     playpage.hpp
@@ -30,6 +32,7 @@ set(LAUNCHER_HEADER
 # Headers that must be pre-processed
 set(LAUNCHER_HEADER_MOC
     datafilespage.hpp
+    datafolderspage.hpp
     graphicspage.hpp
     maindialog.hpp
     playpage.hpp
@@ -44,11 +47,13 @@ set(LAUNCHER_HEADER_MOC
 
 set(LAUNCHER_UI
     ${CMAKE_SOURCE_DIR}/files/ui/datafilespage.ui
+    ${CMAKE_SOURCE_DIR}/files/ui/datafolderspage.ui
     ${CMAKE_SOURCE_DIR}/files/ui/graphicspage.ui
     ${CMAKE_SOURCE_DIR}/files/ui/mainwindow.ui
     ${CMAKE_SOURCE_DIR}/files/ui/playpage.ui
     ${CMAKE_SOURCE_DIR}/files/ui/contentselector.ui
     ${CMAKE_SOURCE_DIR}/files/ui/settingspage.ui
+    ${CMAKE_SOURCE_DIR}/files/ui/folderselector.ui
 )
 
 source_group(launcher FILES ${LAUNCHER} ${LAUNCHER_HEADER})

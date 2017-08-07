@@ -11,6 +11,7 @@ const char Config::LauncherSettings::sCurrentContentListKey[] = "Profiles/curren
 const char Config::LauncherSettings::sLauncherConfigFileName[] = "launcher.cfg";
 const char Config::LauncherSettings::sContentListsSectionPrefix[] = "Profiles/";
 const char Config::LauncherSettings::sContentListSuffix[] = "/content";
+const char Config::LauncherSettings::sDataFolderSuffix[] = "/DataFolder";
 
 Config::LauncherSettings::LauncherSettings()
 {
@@ -98,6 +99,11 @@ QString Config::LauncherSettings::makeContentListKey(const QString& contentListN
     return QString(sContentListsSectionPrefix) + contentListName + QString(sContentListSuffix);
 }
 
+QString Config::LauncherSettings::makeDataFolderListKey(const QString &contentListName)
+{
+    return QString(sContentListsSectionPrefix) + contentListName + QString(sDataFolderSuffix);
+}
+
 void Config::LauncherSettings::setContentList(const GameSettings& gameSettings)
 {
     // obtain content list from game settings (if present)
@@ -130,6 +136,11 @@ void Config::LauncherSettings::removeContentList(const QString &contentListName)
     remove(makeContentListKey(contentListName));
 }
 
+void Config::LauncherSettings::removeFilePathList(const QString &contentListName)
+{
+    remove(makeDataFolderListKey(contentListName));
+}
+
 void Config::LauncherSettings::setCurrentContentListName(const QString &contentListName)
 {
     remove(QString(sCurrentContentListKey));
@@ -146,6 +157,16 @@ void Config::LauncherSettings::setContentList(const QString& contentListName, co
     }
 }
 
+void Config::LauncherSettings::setFilePathList(const QString &contentListName, const QStringList &dataPaths)
+{
+    removeFilePathList(contentListName);
+    QString key = makeDataFolderListKey(contentListName);
+    foreach (const QString& dataPath, dataPaths)
+    {
+        setMultiValue(key, dataPath);
+    }
+}
+
 QString Config::LauncherSettings::getCurrentContentListName() const
 {
     return value(QString(sCurrentContentListKey));
@@ -155,6 +176,11 @@ QStringList Config::LauncherSettings::getContentListFiles(const QString& content
 {
     // QMap returns multiple rows in LIFO order, so need to reverse
     return reverse(getSettings().values(makeContentListKey(contentListName)));
+}
+
+QStringList Config::LauncherSettings::getDataFolders(const QString& contentListname) const
+{
+    return reverse(getSettings().values(makeDataFolderListKey(contentListname)));
 }
 
 QStringList Config::LauncherSettings::reverse(const QStringList& toReverse)
@@ -198,5 +224,3 @@ QString Config::LauncherSettings::makeNewContentListName()
         .arg(timeinfo->tm_year + 1900, 4).arg(timeinfo->tm_mon + 1, 2, base, zeroPad).arg(timeinfo->tm_mday, 2, base, zeroPad)
         .arg(timeinfo->tm_hour, 2, base, zeroPad).arg(timeinfo->tm_min, 2, base, zeroPad).arg(timeinfo->tm_sec, 2, base, zeroPad);
 }
-
-

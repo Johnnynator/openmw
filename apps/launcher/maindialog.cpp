@@ -21,6 +21,7 @@
 #include "graphicspage.hpp"
 #include "datafilespage.hpp"
 #include "settingspage.hpp"
+#include "datafolderspage.hpp"
 
 using namespace Process;
 
@@ -92,6 +93,12 @@ void Launcher::MainDialog::createIcons()
     dataFilesButton->setTextAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     dataFilesButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
+    QListWidgetItem *dataFoldersButton = new QListWidgetItem(iconWidget);
+    dataFoldersButton->setIcon(QIcon(":/images/openmw-plugin.png"));
+    dataFoldersButton->setText(tr("Data Folders"));
+    dataFoldersButton->setTextAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    dataFoldersButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
     QListWidgetItem *graphicsButton = new QListWidgetItem(iconWidget);
     graphicsButton->setIcon(QIcon::fromTheme("video-display"));
     graphicsButton->setText(tr("Graphics"));
@@ -116,6 +123,7 @@ void Launcher::MainDialog::createPages()
     mDataFilesPage = new DataFilesPage(mCfgMgr, mGameSettings, mLauncherSettings, this);
     mGraphicsPage = new GraphicsPage(mCfgMgr, mEngineSettings, this);
     mSettingsPage = new SettingsPage(mCfgMgr, mGameSettings, mLauncherSettings, this);
+    mDataFoldersPage = new DataFoldersPage(mCfgMgr, mGameSettings, mLauncherSettings, this);
 
     // Set the combobox of the play page to imitate the combobox on the datafilespage
     mPlayPage->setProfilesModel(mDataFilesPage->profilesModel());
@@ -124,6 +132,7 @@ void Launcher::MainDialog::createPages()
     // Add the pages to the stacked widget
     pagesWidget->addWidget(mPlayPage);
     pagesWidget->addWidget(mDataFilesPage);
+    pagesWidget->addWidget(mDataFoldersPage);
     pagesWidget->addWidget(mGraphicsPage);
     pagesWidget->addWidget(mSettingsPage);
 
@@ -237,6 +246,8 @@ bool Launcher::MainDialog::reloadSettings()
         return false;
 
     if (!mDataFilesPage->loadSettings())
+        return false;
+    if(!mDataFilesPage->loadSettings())
         return false;
 
     if (!mGraphicsPage->loadSettings())
@@ -473,6 +484,7 @@ bool Launcher::MainDialog::writeSettings()
     // Now write all config files
     saveSettings();
     mDataFilesPage->saveSettings();
+    mDataFoldersPage->saveSettings();
     mGraphicsPage->saveSettings();
     mSettingsPage->saveSettings();
 
